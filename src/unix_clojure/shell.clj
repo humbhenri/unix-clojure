@@ -1,7 +1,11 @@
 (ns unix-clojure.shell
   (:gen-class)
-  (:use [unix-clojure.dir :only [get-current-dir]]
+  (:use [unix-clojure.dir :only [get-current-dir pwd]]
         [unix-clojure.cat :only [cat]]))
+
+
+(defn exit []
+  (System/exit 0))
 
 
 (defn print-prompt []
@@ -9,14 +13,17 @@
   (flush))
 
 
+(defn run-command-with-args [^String command args]
+  (if-let [fun (ns-resolve 'unix-clojure.shell (symbol command))]
+    (apply fun args)
+    (println "Command " command " not found.")))
+
+
 (defn execute-command [line-input]
   (let [tokens (vec (.split (.trim line-input) "\\s+"))
         command (first tokens)
         args (rest tokens)]
-    (cond
-     (= command "cat") (apply cat args)
-     (= command "exit") (System/exit 0)
-     :else (println (str "Command " command " not recognized")))))
+    (run-command-with-args command args)))
 
 
 (defn run []
