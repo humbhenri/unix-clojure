@@ -7,7 +7,10 @@ Implemented so far:
 
 ## Usage
 
-FIXME
+lein uberjar
+java -jar target\unix-clojure-0.1.0-SNAPSHOT-standalone.jar
+
+*lein run* doesn't works
 
 ## License
 
