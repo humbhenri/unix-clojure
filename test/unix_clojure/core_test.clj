@@ -41,9 +41,9 @@ skdfj
 
 
 (fact "obvious paths should exist"
-  (path-exists ".") => true
-  (path-exists "..") => true
-  (path-exists (get-current-dir)) => true)
+  (path-exists? ".") => true
+  (path-exists? "..") => true
+  (path-exists? (get-current-dir)) => true)
 
 
 (against-background [(before :facts
@@ -51,7 +51,7 @@ skdfj
                                (cd "C:/Temp")
                                (mkdir "blah")))]
   (fact "mkdir should make a new directory under current working directory"
-    (path-exists "blah") => true)
+    (path-exists? "blah") => true)
 
   (fact "cd should accept relative paths"
     (cd "blah")

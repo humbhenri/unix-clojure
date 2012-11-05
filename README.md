@@ -7,11 +7,15 @@ Implemented so far:
  - pwd
  - cd
  - exit
+ - mkdir
+ - rmdir
 
 ## Usage
 
 lein uberjar
+
 java -jar target\unix-clojure-0.1.0-SNAPSHOT-standalone.jar
+
 A basic cmd like shell appears, type to enter command.
 
 **lein run** doesn't work

@@ -1,6 +1,6 @@
 (ns unix-clojure.shell
   (:gen-class)
-  (:use [unix-clojure.dir :only [get-current-dir pwd cd]]
+  (:use [unix-clojure.dir :only [get-current-dir pwd cd mkdir rmdir]]
         [unix-clojure.cat :only [cat]]))
 
 

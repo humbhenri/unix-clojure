@@ -14,23 +14,8 @@
   (.isAbsolute (File. path)))
 
 
-(defn path-exists [path]
-  (if (absolute? path)
-    (.exists (File. path))
-    (.exists (File. (get-current-dir) path))))
-
-
-(defn pwd []
-  (println (get-current-dir)))
-
-
-(defn cd [dir]
-  (reset! WORKING_DIR
-          (cond
-           (= dir ".") (get-current-dir)
-           (= dir "..") (.getCanonicalPath (File. (get-current-dir) dir))
-           (absolute? dir) (.getCanonicalPath (File. dir))
-           :else (.getCanonicalPath (File. @WORKING_DIR dir)))))
+(defn directory? [path]
+  (.isDirectory (File. path)))
 
 
 (defn get-path [path]
@@ -39,13 +24,35 @@
     (.getCanonicalPath (File. (get-current-dir) path))))
 
 
+(defn path-exists? [path]
+  (.exists (File. (get-path path))))
+
+
+(defn pwd []
+  (println (get-current-dir)))
+
+
+(defn cd [dir]
+  (if (path-exists? dir)
+    (reset! WORKING_DIR
+            (cond
+             (= dir ".") (get-current-dir)
+             (= dir "..") (.getCanonicalPath (File. (get-current-dir) dir))
+             (absolute? dir) (.getCanonicalPath (File. dir))
+             :else (.getCanonicalPath (File. @WORKING_DIR dir))))
+    (println "Directory " dir " not found!")))
+
+
 (defn mkdir [dir-name]
   (.mkdirs (File. (get-path dir-name))))
 
 
 (defn rmdir [dir-name]
   (try
-    (delete-file (get-path dir-name))
+    (let [dir (get-path dir-name)]
+      (if (directory? dir)
+        (delete-file dir)
+        (println dir-name " is not a directory!")))
     (catch IOException e
       (println "Couldn't delete " dir-name))))
 

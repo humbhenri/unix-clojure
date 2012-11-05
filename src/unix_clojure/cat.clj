@@ -9,6 +9,6 @@
       (println line))
     (doseq [file files]
       (try
-        (print (slurp (get-file file)))
+        (print (slurp (get-path file)))
         (catch FileNotFoundException e
           (println "File " file " not found."))))))
