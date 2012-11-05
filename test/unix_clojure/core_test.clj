@@ -32,9 +32,12 @@ skdfj
                     (fact "cat files should concatenate files' content to stdout"
                       (dos2unix (with-out-str (cat FILE FILE2))) => (str TEXT TEXT2)))
 
-;; (fact "cd change pwd"
-;;   (cd "C:/Users")
-;;   (with-out-str (pwd) => "C:\\Users"))
+(fact "pwd should show current working dir"
+  (.trim (with-out-str (pwd))) => (get-current-dir))
+
+(against-background [(before :facts (cd "C:/Users"))]
+  (fact "cd change pwd"
+    (.trim (with-out-str (pwd))) => (canonical-path "C:\\Users")))
 
 
 (fact "obvious paths should exist"
@@ -43,6 +46,16 @@ skdfj
   (path-exists (get-current-dir)) => true)
 
 
-;; (fact "mkdir should make a new directory under current working directory"
-;;   (unix-clojure.dir/mkdir "blah")
-;;   (path-exists "blah") => true)
+(against-background [(before :facts
+                             (do
+                               (cd "C:/Temp")
+                               (mkdir "blah")))]
+  (fact "mkdir should make a new directory under current working directory"
+    (path-exists "blah") => true)
+
+  (fact "cd should accept relative paths"
+    (cd "blah")
+    (.trim (with-out-str (pwd))) => (canonical-path "C:/Temp/blah"))
+
+  (fact "rmdir should remove an empty dir"
+    (rmdir "blah") => true))
