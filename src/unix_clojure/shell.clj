@@ -23,7 +23,8 @@
   (let [tokens (vec (.split (.trim line-input) "\\s+"))
         command (first tokens)
         args (rest tokens)]
-    (run-command-with-args command args)))
+    (when ( >(.length command) 0)
+      (run-command-with-args command args))))
 
 
 (defn run []
