@@ -1,5 +1,5 @@
 (ns unix-clojure.dir
-  (:import [java.io File IOException])
+  (:import [java.io File IOException FileNotFoundException])
   (:use [clojure.java.io :only [delete-file]]))
 
 ;;; java doesn't let you change the working directory
@@ -16,6 +16,10 @@
 
 (defn directory? [path]
   (.isDirectory (File. path)))
+
+
+(defn file? [path]
+  (.isFile (File. path)))
 
 
 (defn get-path [path]
@@ -44,7 +48,10 @@
 
 
 (defn mkdir [dir-name]
-  (.mkdirs (File. (get-path dir-name))))
+  (try
+    (.mkdirs (File. (get-path dir-name)))
+    (catch IOException e
+      (println "Couldn't create directory " dir-name))))
 
 
 (defn rmdir [dir-name]
@@ -59,3 +66,21 @@
 
 (defn canonical-path [path]
   (.getCanonicalPath (File. path)))
+
+
+(defn touch [file-name]
+  (try
+    (.createNewFile (File. (get-path file-name)))
+    (catch IOException e
+      (println "Couldn't create file " file-name))
+    (catch FileNotFoundException e
+      (println "Couldn't create file " file-name))))
+
+
+(defn rm [file-name]
+  (try
+    (if-not (directory? (get-path file-name))
+      (delete-file (get-path file-name))
+      (println "rm: " file-name ": is a directory"))
+    (catch IOException e
+      (println "Couldn't delete " file-name))))

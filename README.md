@@ -9,6 +9,8 @@ Implemented so far:
  - exit
  - mkdir
  - rmdir
+ - touch
+ - rm
 
 ## Usage
 

@@ -59,3 +59,14 @@ skdfj
 
   (fact "rmdir should remove an empty dir"
     (rmdir "blah") => true))
+
+
+(against-background [(before :facts (cd "C:/Temp"))]
+  (fact "touch should create a file"
+    (touch "new.txt")
+    (path-exists? "new.txt") => true
+    (directory? "new.txt") => false)    ; TODO false doesn't work with empty files
+
+  (fact "rm should remove a file"
+    (rm "new.txt")
+    (path-exists? "new.txt") => false))
