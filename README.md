@@ -12,8 +12,9 @@ Implemented so far:
 
 lein uberjar
 java -jar target\unix-clojure-0.1.0-SNAPSHOT-standalone.jar
+A basic cmd like shell appears, type to enter command.
 
-*lein run* doesn't works
+**lein run** doesn't work
 
 ## License
 
