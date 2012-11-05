@@ -11,4 +11,4 @@
       (try
         (print (slurp (get-file file)))
         (catch FileNotFoundException e
-          (println (str "File " file " not found.")))))))
+          (println "File " file " not found."))))))
