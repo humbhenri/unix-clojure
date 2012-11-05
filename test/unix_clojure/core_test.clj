@@ -27,11 +27,22 @@ skdfj
 (against-background [(before :facts (write-test-file))]
 
                     (fact "cat file should print file content"
-                          (dos2unix (with-out-str (cat FILE))) => TEXT)
+                      (dos2unix (with-out-str (cat FILE))) => TEXT)
 
                     (fact "cat files should concatenate files' content to stdout"
-                          (dos2unix (with-out-str (cat FILE FILE2))) => (str TEXT TEXT2)))
+                      (dos2unix (with-out-str (cat FILE FILE2))) => (str TEXT TEXT2)))
 
-(fact "cd change pwd"
-  (cd "C:/Users")
-  (with-out-str (pwd) => "C:\\Users"))
+;; (fact "cd change pwd"
+;;   (cd "C:/Users")
+;;   (with-out-str (pwd) => "C:\\Users"))
+
+
+(fact "obvious paths should exist"
+  (path-exists ".") => true
+  (path-exists "..") => true
+  (path-exists (get-current-dir)) => true)
+
+
+;; (fact "mkdir should make a new directory under current working directory"
+;;   (unix-clojure.dir/mkdir "blah")
+;;   (path-exists "blah") => true)
