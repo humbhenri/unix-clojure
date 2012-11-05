@@ -1,5 +1,6 @@
 (ns unix-clojure.cat
-  (:use [clojure.java.io])
+  (:use [clojure.java.io]
+        [unix-clojure.dir])
   (:import [java.io FileNotFoundException]))
 
 (defn cat [& files]
@@ -8,6 +9,6 @@
       (println line))
     (doseq [file files]
       (try
-        (print (slurp file))
+        (print (slurp (get-file file)))
         (catch FileNotFoundException e
           (println (str "File " file " not found.")))))))

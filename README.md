@@ -4,6 +4,9 @@ Unix utilities written in clojure
 
 Implemented so far:
  - cat
+ - pwd
+ - cd
+ - exit
 
 ## Usage
 

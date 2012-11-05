@@ -1,6 +1,7 @@
 (ns unix-clojure.core-test
   (:use midje.sweet
         unix-clojure.cat
+        unix-clojure.dir
         clojure.java.io))
 
 (def FILE "test.txt")
@@ -30,3 +31,7 @@ skdfj
 
                     (fact "cat files should concatenate files' content to stdout"
                           (dos2unix (with-out-str (cat FILE FILE2))) => (str TEXT TEXT2)))
+
+(fact "cd change pwd"
+  (cd "C:/Users")
+  (with-out-str (pwd) => "C:\\Users"))
