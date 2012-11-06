@@ -32,6 +32,15 @@
   (.exists (File. (get-path path))))
 
 
+(defn file-name [file]
+  (.getName file))
+
+
+(defmacro walk-directory [path & body]
+  `(doseq [~'item (file-seq (File. (get-path ~path)))]
+                     ~@body))
+
+
 (defn pwd []
   (println (get-current-dir)))
 

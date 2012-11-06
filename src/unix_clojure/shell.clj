@@ -1,7 +1,8 @@
 (ns unix-clojure.shell
   (:gen-class)
   (:use [unix-clojure.dir :only [get-current-dir pwd cd mkdir rmdir touch rm]]
-        [unix-clojure.cat :only [cat]]))
+        [unix-clojure.cat :only [cat]]
+        [unix-clojure.ls :only [ls]]))
 
 
 (defn exit []
