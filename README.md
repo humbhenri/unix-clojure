@@ -11,6 +11,9 @@ Implemented so far:
  - rmdir
  - touch
  - rm
+ - ls
+
+** No command options yet **
 
 ## Usage
 
