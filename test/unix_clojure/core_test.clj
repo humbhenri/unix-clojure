@@ -2,7 +2,9 @@
   (:use midje.sweet
         unix-clojure.cat
         unix-clojure.dir
-        clojure.java.io))
+        unix-clojure.ls
+        clojure.java.io)
+  (:require clojure.string))
 
 (def FILE "test.txt")
 (def FILE2 "text2.txt")
@@ -24,7 +26,7 @@ skdfj
 (defn dos2unix [s]
   (.replaceAll s "\r\n" "\n"))
 
-(against-background [(before :facts (write-test-file))]
+(against-background [(before :facts (write-test-file)) (after :facts (do (rm FILE) (rm FILE2)))]
 
                     (fact "cat file should print file content"
                       (dos2unix (with-out-str (cat FILE))) => TEXT)
@@ -70,3 +72,17 @@ skdfj
   (fact "rm should remove a file"
     (rm "new.txt")
     (path-exists? "new.txt") => false))
+
+(against-background [(before :facts (do
+                                      (mkdir "C:/Temp/blah")
+                                      (cd "C:/Temp/blah")
+                                      (touch "A")
+                                      (touch "B")
+                                      (touch "C")))
+                     (after :facts (do
+                                     (rm "A")
+                                     (rm "B")
+                                     (rm "C")
+                                     (rmdir "C:/Temp/blah")))]
+  (fact "ls should list files"
+    (vec (clojure.string/split-lines (with-out-str (ls)))) => ["A" "B" "C"]))

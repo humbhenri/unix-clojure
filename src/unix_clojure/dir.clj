@@ -36,10 +36,13 @@
   (.getName file))
 
 
-(defmacro walk-directory [path & body]
+(defmacro walk-directory-recursive [path & body]
   `(doseq [~'item (file-seq (File. (get-path ~path)))]
-                     ~@body))
+     ~@body))
 
+(defmacro walk-directory [path & body]
+  `(doseq [~'item (.listFiles (File. (get-path ~path)))]
+     ~@body))
 
 (defn pwd []
   (println (get-current-dir)))
