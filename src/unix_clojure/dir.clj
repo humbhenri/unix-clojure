@@ -6,6 +6,10 @@
 (def WORKING_DIR (atom (System/getProperty "user.dir")))
 
 
+(defn get-user-dir []
+  (System/getProperty "user.home"))
+
+
 (defn get-current-dir []
   @WORKING_DIR)
 
@@ -48,15 +52,17 @@
   (println (get-current-dir)))
 
 
-(defn cd [dir]
-  (if (path-exists? dir)
-    (reset! WORKING_DIR
-            (cond
-             (= dir ".") (get-current-dir)
-             (= dir "..") (.getCanonicalPath (File. (get-current-dir) dir))
-             (absolute? dir) (.getCanonicalPath (File. dir))
-             :else (.getCanonicalPath (File. @WORKING_DIR dir))))
-    (println "Directory " dir " not found!")))
+(defn cd
+  ([] (cd (get-user-dir)))
+  ([dir]
+     (if (path-exists? dir)
+       (reset! WORKING_DIR
+               (cond
+                (= dir ".") (get-current-dir)
+                (= dir "..") (.getCanonicalPath (File. (get-current-dir) dir))
+                (absolute? dir) (.getCanonicalPath (File. dir))
+                :else (.getCanonicalPath (File. @WORKING_DIR dir))))
+       (println "Directory " dir " not found!"))))
 
 
 (defn mkdir [dir-name]
