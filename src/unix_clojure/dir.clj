@@ -40,12 +40,12 @@
   (.getName file))
 
 
-(defmacro walk-directory-recursive [path & body]
-  `(doseq [~'item (file-seq (File. (get-path ~path)))]
+(defmacro walk-directory-recursive [binding path & body]
+  `(doseq [~binding (file-seq (File. (get-path ~path)))]
      ~@body))
 
-(defmacro walk-directory [path & body]
-  `(doseq [~'item (.listFiles (File. (get-path ~path)))]
+(defmacro walk-directory [binding path & body]
+  `(doseq [~binding (.listFiles (File. (get-path ~path)))]
      ~@body))
 
 (defn pwd []

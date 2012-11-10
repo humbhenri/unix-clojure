@@ -8,5 +8,5 @@
 
 (defn ls [& args]
   (if (empty? args)
-    (walk-directory "." (print-file-name item))
-    (walk-directory (first args) (print-file-name item))))
+    (walk-directory file "." (print-file-name file))
+    (walk-directory file (first args) (print-file-name file))))
