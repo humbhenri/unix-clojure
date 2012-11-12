@@ -3,8 +3,11 @@
         unix-clojure.cat
         unix-clojure.dir
         unix-clojure.ls
+        unix-clojure.grep
         clojure.java.io)
   (:require clojure.string))
+
+(def TEMPDIR (get-temp-dir))
 
 (def FILE "test.txt")
 (def FILE2 "text2.txt")
@@ -37,9 +40,9 @@ skdfj
 (fact "pwd should show current working dir"
   (.trim (with-out-str (pwd))) => (get-current-dir))
 
-(against-background [(before :facts (cd "C:/Users"))]
+(against-background [(before :facts (cd TEMPDIR))]
   (fact "cd change pwd"
-    (.trim (with-out-str (pwd))) => (canonical-path "C:\\Users")))
+    (.trim (with-out-str (pwd))) => (canonical-path TEMPDIR)))
 
 
 (fact "obvious paths should exist"
@@ -50,20 +53,20 @@ skdfj
 
 (against-background [(before :facts
                              (do
-                               (cd "C:/Temp")
+                               (cd TEMPDIR)
                                (mkdir "blah")))]
   (fact "mkdir should make a new directory under current working directory"
     (path-exists? "blah") => true)
 
   (fact "cd should accept relative paths"
     (cd "blah")
-    (.trim (with-out-str (pwd))) => (canonical-path "C:/Temp/blah"))
+    (.trim (with-out-str (pwd))) => (canonical-path (str TEMPDIR "/blah")))
 
   (fact "rmdir should remove an empty dir"
     (rmdir "blah") => true))
 
 
-(against-background [(before :facts (cd "C:/Temp"))]
+(against-background [(before :facts (cd TEMPDIR))]
   (fact "touch should create a file"
     (touch "new.txt")
     (path-exists? "new.txt") => true
@@ -74,15 +77,27 @@ skdfj
     (path-exists? "new.txt") => false))
 
 (against-background [(before :facts (do
-                                      (mkdir "C:/Temp/blah")
-                                      (cd "C:/Temp/blah")
+                                      (mkdir (str TEMPDIR "/blah"))
+                                      (cd (str TEMPDIR "/blah"))
                                       (touch "A")
                                       (touch "B")
                                       (touch "C")))
                      (after :facts (do
+                                     (cd (str TEMPDIR "/blah"))
                                      (rm "A")
                                      (rm "B")
                                      (rm "C")
-                                     (rmdir "C:/Temp/blah")))]
+                                     (cd "..")
+                                     (rmdir "blah")))]
   (fact "ls should list files"
     (vec (clojure.string/split-lines (with-out-str (ls)))) => ["A" "B" "C"]))
+
+
+(against-background [(before :facts (do
+                                      (cd TEMPDIR)
+                                      (touch "file")
+                                      (spit (get-path "file") "sljfsdf\ns121k\nskjf\n22ol\n0\n\n\n\nabc\n")))
+                     (after :facts (rm (get-path "file")))]
+
+  (fact "grep should print lines matching a pattern from a file"
+    (dos2unix (with-out-str (grep "\\d+" (get-path "file")))) => "ns121k\n22ol\n"))

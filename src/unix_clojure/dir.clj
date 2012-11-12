@@ -1,6 +1,6 @@
 (ns unix-clojure.dir
   (:import [java.io File IOException FileNotFoundException])
-  (:use [clojure.java.io :only [delete-file]]))
+  (:use [clojure.java.io :only [delete-file reader]]))
 
 ;;; java doesn't let you change the working directory
 (def WORKING_DIR (atom (System/getProperty "user.dir")))
@@ -12,6 +12,10 @@
 
 (defn get-current-dir []
   @WORKING_DIR)
+
+
+(defn get-temp-dir []
+  (System/getProperty "java.io.tmpdir"))
 
 
 (defn absolute? [path]
@@ -79,6 +83,8 @@
         (delete-file dir)
         (println dir-name " is not a directory!")))
     (catch IOException e
+      (println "Couldn't delete " dir-name))
+    (catch FileNotFoundException e
       (println "Couldn't delete " dir-name))))
 
 
@@ -101,4 +107,12 @@
       (delete-file (get-path file-name))
       (println "rm: " file-name ": is a directory"))
     (catch IOException e
+      (println "Couldn't delete " file-name))
+    (catch FileNotFoundException e
       (println "Couldn't delete " file-name))))
+
+
+(defmacro process-file-contents [binding path body]
+  `(with-open [rdr# (reader (get-path ~path))]
+     (doseq [~binding (line-seq rdr#)]
+       ~body)))
