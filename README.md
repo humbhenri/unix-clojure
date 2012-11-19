@@ -12,6 +12,7 @@ Implemented so far:
  - touch
  - rm
  - ls
+ - date
 
 ** No command options yet **
 

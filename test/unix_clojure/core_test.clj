@@ -92,7 +92,6 @@ skdfj
   (fact "ls should list files"
     (vec (clojure.string/split-lines (with-out-str (ls)))) => ["A" "B" "C"]))
 
-
 (against-background [(before :facts (do
                                       (cd TEMPDIR)
                                       (touch "file")

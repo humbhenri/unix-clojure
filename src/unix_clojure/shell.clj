@@ -2,7 +2,8 @@
   (:gen-class)
   (:use [unix-clojure.dir :only [get-current-dir pwd cd mkdir rmdir touch rm]]
         [unix-clojure.cat :only [cat]]
-        [unix-clojure.ls :only [ls]]))
+        [unix-clojure.ls :only [ls]]
+        [unix-clojure.date :only [date]]))
 
 
 (defn exit []
@@ -24,7 +25,7 @@
   (let [tokens (vec (.split (.trim line-input) "\\s+"))
         command (first tokens)
         args (rest tokens)]
-    (when ( >(.length command) 0)
+    (when (> (.length command) 0)
       (run-command-with-args command args))))
 
 
