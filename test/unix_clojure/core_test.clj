@@ -100,7 +100,7 @@ skdfj
                      (after :facts (rm (get-path "file")))]
 
   (fact "wc should count number of new lines in a file"
-    (dos2unix (with-out-str (wc "file"))) => "9\n")
+    (dos2unix (with-out-str (wc "file"))) => "9 6 33 file\n")
 
   (fact "grep should print lines matching a pattern from a file"
     (dos2unix (with-out-str (grep "\\d+" (get-path "file")))) => "ns121k\n22ol\n"))
