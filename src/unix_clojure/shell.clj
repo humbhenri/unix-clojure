@@ -3,7 +3,8 @@
   (:use [unix-clojure.dir :only [get-current-dir pwd cd mkdir rmdir touch rm]]
         [unix-clojure.cat :only [cat]]
         [unix-clojure.ls :only [ls]]
-        [unix-clojure.date :only [date]]))
+        [unix-clojure.date :only [date]]
+        [unix-clojure.grep :only [grep]]))
 
 
 (defn exit []
