@@ -4,6 +4,7 @@
         unix-clojure.dir
         unix-clojure.ls
         unix-clojure.grep
+        unix-clojure.wc
         clojure.java.io)
   (:require clojure.string))
 
@@ -97,6 +98,9 @@ skdfj
                                       (touch "file")
                                       (spit (get-path "file") "sljfsdf\ns121k\nskjf\n22ol\n0\n\n\n\nabc\n")))
                      (after :facts (rm (get-path "file")))]
+
+  (fact "wc should count number of new lines in a file"
+    (dos2unix (with-out-str (wc "file"))) => "9\n")
 
   (fact "grep should print lines matching a pattern from a file"
     (dos2unix (with-out-str (grep "\\d+" (get-path "file")))) => "ns121k\n22ol\n"))

@@ -13,14 +13,15 @@ Implemented so far:
  - rm
  - ls
  - date
+ - wc
 
 ** No command options yet **
 
 ## Usage
 
-lein uberjar
+ - lein uberjar
 
-java -jar target\unix-clojure-0.1.0-SNAPSHOT-standalone.jar
+ - java -jar target\unix-clojure-0.1.0-SNAPSHOT-standalone.jar
 
 A basic cmd like shell appears, type to enter command.
 

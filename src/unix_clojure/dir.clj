@@ -116,3 +116,12 @@
   `(with-open [rdr# (reader (get-path ~path))]
      (doseq [~binding (line-seq rdr#)]
        ~body)))
+
+
+(defn read-file [path]
+  (try
+    (slurp (get-path path))
+    (catch FileNotFoundException e
+      (println "File" path" not found."))
+    (catch IOException e
+      (println "Couldn't read" path "."))))
