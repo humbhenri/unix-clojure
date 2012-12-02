@@ -14,6 +14,7 @@ Implemented so far:
  - ls
  - date
  - wc
+ - echo
 
 ** No command options yet **
 

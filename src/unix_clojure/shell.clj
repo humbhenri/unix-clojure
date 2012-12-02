@@ -5,7 +5,8 @@
         [unix-clojure.ls :only [ls]]
         [unix-clojure.date :only [date]]
         [unix-clojure.grep :only [grep]]
-        [unix-clojure.wc :only [wc]]))
+        [unix-clojure.wc :only [wc]]
+        [unix-clojure.echo :only [echo]]))
 
 
 (defn exit []
