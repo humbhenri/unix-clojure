@@ -91,7 +91,7 @@ skdfj
                                      (cd "..")
                                      (rmdir "blah")))]
   (fact "ls should list files"
-    (vec (clojure.string/split-lines (with-out-str (ls)))) => ["A" "B" "C"]))
+        (sort (vec (clojure.string/split-lines (with-out-str (ls))))) => ["A" "B" "C"]))
 
 (against-background [(before :facts (do
                                       (cd TEMPDIR)
