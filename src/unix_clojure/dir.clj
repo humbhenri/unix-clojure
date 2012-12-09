@@ -1,5 +1,7 @@
 (ns unix-clojure.dir
-  (:import [java.io File IOException FileNotFoundException])
+  (:import [java.io File IOException FileNotFoundException]
+           [java.nio.file Files Path LinkOption]
+           [java.nio.file.attribute PosixFilePermissions PosixFileAttributes])
   (:use [clojure.java.io :only [delete-file reader]]))
 
 ;;; java doesn't let you change the working directory
@@ -139,3 +141,34 @@
 
 (defn modification-time [file]
   (.lastModified file))
+
+(def no-follow-links
+  (into-array [LinkOption/NOFOLLOW_LINKS]))
+
+(defn owner [file]
+  (-> (.toPath file) (Files/getOwner no-follow-links) (.getName)))
+
+(defn size [file]
+  (-> (.toPath file) (Files/size)))
+
+(defn permissions [file]
+  (-> (.toPath file)
+      (Files/getPosixFilePermissions no-follow-links)
+      PosixFilePermissions/toString))
+
+(defn file-type [file]
+  (let [path (.toPath file)]
+    (cond (Files/isRegularFile path no-follow-links) "-"
+          (Files/isDirectory path no-follow-links) "d"
+          (Files/isSymbolicLink path) "l"
+          :else "-")))
+
+(defn group [file]
+  (-> (.toPath file)
+      (Files/readAttributes PosixFileAttributes no-follow-links)
+      (.group)
+      (.getName)))
+
+(defn number-hard-links [file]
+  (-> (.toPath file)
+      (Files/getAttribute "unix:nlink" no-follow-links)))
