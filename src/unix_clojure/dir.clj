@@ -49,8 +49,14 @@
      ~@body))
 
 (defmacro walk-directory [binding path & body]
-  `(doseq [~binding (.listFiles (File. (get-path ~path)))]
+  `(doseq [~binding (sort-by file-name (.listFiles (File. (get-path ~path))))]
      ~@body))
+
+(defn list-dir-contents [path]
+  (.listFiles (File. (get-path path))))
+
+(defn list-dir-contents-recursive [path]
+  (file-seq (File. (get-path path))))
 
 (defn pwd []
   (println (get-current-dir)))
@@ -125,3 +131,11 @@
       (println "File" path" not found."))
     (catch IOException e
       (println "Couldn't read" path "."))))
+
+
+(defn hidden? [file]
+  (let [name (file-name file)]
+    (.startsWith name ".")))
+
+(defn modification-time [file]
+  (.lastModified file))
