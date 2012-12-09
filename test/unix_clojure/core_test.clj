@@ -107,6 +107,5 @@ skdfj
     (dos2unix (with-out-str (grep "\\d+" (get-path "file")))) => "ns121k\n22ol\n"))
 
 
-(def args "ABC SDFA CVAF ARE QWER VX")
 (fact "echo test"
-  (dos2unix (with-out-str (echo args)))) => (str args "\n")
+  (dos2unix (with-out-str (echo "abc" "cba"))) => (str "abc cba" \newline))
