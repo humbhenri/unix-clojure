@@ -13,10 +13,7 @@ Implemented so far:
  - rm
  - ls
  - date
- - wc
  - echo
-
-** No command options yet **
 
 ## Usage
 
@@ -28,6 +25,7 @@ A basic cmd like shell appears, type to enter command.
 
 **lein run** doesn't work
 
+lein trampoline run works in linux
 ## License
 
 Copyright © 2012 FIXME
