@@ -152,9 +152,12 @@
   (-> (.toPath file) (Files/size)))
 
 (defn permissions [file]
-  (-> (.toPath file)
-      (Files/getPosixFilePermissions no-follow-links)
-      PosixFilePermissions/toString))
+  (try
+    (-> (.toPath file)
+        (Files/getPosixFilePermissions no-follow-links)
+        PosixFilePermissions/toString)
+    (catch UnsupportedOperationException e
+      "")))
 
 (defn file-type [file]
   (let [path (.toPath file)]
@@ -164,11 +167,17 @@
           :else "-")))
 
 (defn group [file]
-  (-> (.toPath file)
-      (Files/readAttributes PosixFileAttributes no-follow-links)
-      (.group)
-      (.getName)))
+  (try
+    (-> (.toPath file)
+        (Files/readAttributes PosixFileAttributes no-follow-links)
+        (.group)
+        (.getName))
+    (catch UnsupportedOperationException e
+      0)))
 
 (defn number-hard-links [file]
-  (-> (.toPath file)
-      (Files/getAttribute "unix:nlink" no-follow-links)))
+  (try
+    (-> (.toPath file)
+        (Files/getAttribute "unix:nlink" no-follow-links))
+    (catch UnsupportedOperationException e
+      0)))
