@@ -1,14 +1,8 @@
 (ns unix-clojure.cat
-  (:use [clojure.java.io]
-        [unix-clojure.dir])
-  (:import [java.io FileNotFoundException]))
+  (:use [unix-clojure.dir :only [read-file process-input]]))
 
 (defn cat [& files]
   (if (empty? files)
-    (doseq [line (line-seq (java.io.BufferedReader. *in*))]
-      (println line))
+    (process-input line (println line))
     (doseq [file files]
-      (try
-        (print (slurp (get-path file)))
-        (catch FileNotFoundException e
-          (println "File " file " not found."))))))
+      (print (read-file file)))))

@@ -54,6 +54,10 @@
   `(doseq [~binding (sort-by file-name (.listFiles (File. (get-path ~path))))]
      ~@body))
 
+(defmacro process-input [binding & body]
+  `(doseq [~binding (line-seq (java.io.BufferedReader. *in*))]
+     ~@body))
+
 (defn list-dir-contents [path]
   (.listFiles (File. (get-path path))))
 
