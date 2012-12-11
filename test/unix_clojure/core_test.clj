@@ -104,7 +104,8 @@ skdfj
     (dos2unix (with-out-str (wc "file"))) => "9 6 33 file\n")
 
   (fact "grep should print lines matching a pattern from a file"
-    (dos2unix (with-out-str (grep "\\d+" "file"))) => "s121k\n22ol\n0\n"))
+    (dos2unix (with-out-str (grep "\\d+" "file"))) => "s121k\n22ol\n0\n"
+    (dos2unix (with-out-str (grep "-v" "\\d+" "file"))) => "sljfsdf\nskjf\n\n\n\nabc\n"))
 
 
 (fact "echo test"
