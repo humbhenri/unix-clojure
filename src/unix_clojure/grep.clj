@@ -3,5 +3,5 @@
 
 (defn grep [pattern file]
   (process-file-contents line file
-                         (when-not (nil? (re-find (re-pattern pattern) (get-path file)))
+                         (when (re-find (re-pattern pattern) line)
                            (println line))))
