@@ -2,7 +2,8 @@
   (:import [java.io File IOException FileNotFoundException]
            [java.nio.file Files Path LinkOption]
            [java.nio.file.attribute PosixFilePermissions PosixFileAttributes])
-  (:use [clojure.java.io :only [delete-file reader]]))
+  (:use [clojure.java.io :only [delete-file reader]]
+        [clojure.string :only [split-lines]]))
 
 ;;; java doesn't let you change the working directory
 (def WORKING_DIR (atom (System/getProperty "user.dir")))
@@ -137,6 +138,9 @@
       (println "File" path" not found."))
     (catch IOException e
       (println "Couldn't read" path "."))))
+
+(defn read-lines [path]
+  (split-lines (read-file path)))
 
 
 (defn hidden? [file]
