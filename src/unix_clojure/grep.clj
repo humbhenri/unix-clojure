@@ -4,13 +4,9 @@
         [clojure.string :only [join]]))
 
 
-(defn prepend-pos [lines text]
-  (->>
-   (for [[i l] (map list (iterate inc 1) text)]
-     (for [k lines]
-       (when (= k l) (str i ": " k))))
-   (flatten)
-   (filter (comp not nil?))))
+(defn prepend-pos [lines line]
+  (first (for [[i l] (map list (iterate inc 1) lines) :when (= l line)]
+              (str i ": " line))))
 
 
 (defn grep [& args]
@@ -27,7 +23,7 @@
                       :let [matches (re-seq pattern line)]
                       :when (if (:invert-match options) (not matches) matches)]
                   (cond (:only-matching options) (join " " matches)
-                        (:line-number options) (prepend-pos matches lines)
+                        (:line-number options) (prepend-pos lines line)
                         :else line))]
     (if (:count options)
       (println (count matched))
