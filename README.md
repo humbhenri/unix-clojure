@@ -14,6 +14,7 @@ Implemented so far:
  - ls
  - date
  - echo
+ - grep
 
 ## Usage
 
